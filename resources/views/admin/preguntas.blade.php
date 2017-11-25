@@ -25,8 +25,10 @@
         <div class="col-md-12 col-ls-12 col-sm-12">
             <label class="form-control" for="">Crear pregunta</label>
             <center><a class="btn btn-success" href="#" data-toggle="modal" data-target="#modalCrearPreguntaAbierta">Abierta</a>
-            <a class="btn btn-warning" href="#" data-toggle="modal" data-target="#modalCrearPreguntaCerrada" onclick="tablaRespuesta();">Cerrada</a></center>   
+            <a class="btn btn-warning" href="#" data-toggle="modal" data-target="#modalCrearPreguntaCerrada" >Cerrada</a></center>   
         </div>
+
+        {{-- onclick="tablaRespuesta();" --}}
     
         <br>
         <br>

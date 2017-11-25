@@ -111,7 +111,7 @@ class AdminController extends Controller
             $request->session()->put("idPreguntaCerrada",$id);
         }
         
-        return Response::json(array('msg' => "ok", 'html' => $id));
+        return Response::json(array('msg' => "ok", 'html' => $tipo));
     }
 
     // Muestra las encuestas
@@ -466,7 +466,13 @@ class AdminController extends Controller
             $idPreguntaCerrada = $request->session()->get("idPreguntaCerrada");
         }
 
-        $respuestasCerradas = RespuestaCerrada::where('cerrada_id', $idPreguntaCerrada)->get();
+        $tipo = $_GET['tipo'];
+
+        if($tipo == "crear"){
+            $respuestasCerradas = RespuestaCerrada::where('cerrada_id', $idPreguntaCerrada)->get();
+        }else if($tipo == "editar"){
+            $respuestasCerradas = RespuestaCerrada::where('id', $idPreguntaCerrada)->get();
+        }        
 
         $cont = 0;
         $html = "";
@@ -501,7 +507,7 @@ class AdminController extends Controller
         $html .= "</tbody>
                 </table>";
 
-        return Response::json(array('html' => $html, 'pregunta' => "ok"));
+        return Response::json(array('html' => $html, 'id' => $idPreguntaCerrada));
 
     }
 
@@ -624,15 +630,38 @@ class AdminController extends Controller
 
         $html = "";
 
-        $respuestaCerrada = Cerrada::find($id);
+        $preguntaCerrada = Cerrada::find($id);
 
-        $respuestaCerrada->pregunta = $pregunta;
+        $preguntaCerrada->pregunta = $pregunta;
+
+        $preguntaCerrada->save();
+
+        $html = "Se actualizo la pregunta correctamente";
+
+        return Response::json(array('html' => $html,));
+    }
+
+    public function editarRespuestaCerrada(Request $request)
+    {
+        $id = null;
+
+        if($request->session()->get("idPreguntaCerrada") ){
+            $id = $request->session()->get("idPreguntaCerrada");
+        }
+
+        $respuesta = $_GET['respuestaCerrada'];
+
+        $html = "";
+
+        $respuestaCerrada = RespuestaCerrada::find($id);
+
+        $respuestaCerrada->respuesta = $respuesta;
 
         $respuestaCerrada->save();
 
         $html = "Se actualizo la pregunta correctamente";
 
-        return Response::json(array('html' => $html,));
+        return Response::json(array('html' => $html, 'id' => $id));
     }
 
     public function verdadera(Request $request)
