@@ -1,4 +1,5 @@
 $( document ).ready(function() {
+	limpiar();
 	var tipo = "editar";
 	refrescarPreguntas();
 	refrescarRespuestasCerradas(tipo);
@@ -74,13 +75,13 @@ function idPreguntaCerrada() {
 	$.ajax({
 		headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
 		method: "POST",
-		url: "/admin/idPreguntaCerrada",
+		url: "/admin/idCerrada",
 		dataType: 'json',
-		data: { tipo: tipo}
+		data: { id: tipo}
 	})
 
 	.done(function(response){
-		//console.info(response.html);
+		
 	});
 }
 
@@ -105,7 +106,7 @@ $("#formCrearRespuestaCerrada").on("submit", function(){
 
 		.done(function(response) {
 			refrescarRespuestasCerradas(tipo);
-			//console.info(response.html);
+			
 		});
 		
 	}
@@ -138,7 +139,7 @@ function refrescarRespuestasCerradas(tipo) {
 	})
 
 	.done(function(response) {
-		console.info(response.id);
+		
 		$('#tablaRespuestasCerradas').html(response.html).trigger("change");
 		$('#tablaRespuestasCerradas2').html(response.html).trigger("change");
 	});
@@ -213,7 +214,7 @@ function idPreguntaCerradaEditar(id) {
 	})
 
 	.done(function(response){
-		console.info(response.html)
+		
 	});
 }
 

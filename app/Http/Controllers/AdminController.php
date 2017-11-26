@@ -74,13 +74,29 @@ class AdminController extends Controller
 
         $id = $_POST['id'];
 
-        $results = Cerrada::where('pregunta_id', $id)->get();
+        if($id == "crear"){
 
-        foreach ($results as $result) {
-            $id = $result->id;
+            $id = "";
+            $idPreguntas = Cerrada::orderBy('id', 'desc')
+                                    ->limit(1)
+                                    ->get();
+
+            foreach ($idPreguntas as $idPregunta) {
+                $id = $idPregunta->id;          
+            };
+
+            $request->session()->put("idCerrada",$id);
+        }else{
+
+            $results = Cerrada::where('pregunta_id', $id)->get();
+
+            foreach ($results as $result) {
+                $id = $result->id;
+            }
+
+            $request->session()->put("idCerrada",$id);
+
         }
-
-        $request->session()->put("idCerrada",$id);
 
         return Response::json(array('msg' => 'ok', 'html' => $id));
     }
@@ -466,10 +482,14 @@ class AdminController extends Controller
             $idPreguntaCerrada = $request->session()->get("idPreguntaCerrada");
         }
 
+        if($request->session()->get("idCerrada") ){
+            $idCerrada = $request->session()->get("idCerrada");
+        }
+
         $tipo = $_GET['tipo'];
 
         if($tipo == "crear"){
-            $respuestasCerradas = RespuestaCerrada::where('cerrada_id', $idPreguntaCerrada)->get();
+            $respuestasCerradas = RespuestaCerrada::where('cerrada_id', $idCerrada)->get();
         }else if($tipo == "editar"){
             $respuestasCerradas = RespuestaCerrada::where('id', $idPreguntaCerrada)->get();
         }        

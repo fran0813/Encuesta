@@ -15,7 +15,7 @@
                     @endif
 
                     You are logged in! Admin --}}
-                </div>
+                {{-- </div> --}}
             {{-- </div> --}}
         {{-- </div> --}}
 
