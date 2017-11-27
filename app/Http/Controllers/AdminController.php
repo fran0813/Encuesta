@@ -24,25 +24,30 @@ class AdminController extends Controller
         return view('admin.index');
     }
 
-    // Establece el id de la encuesta cuando se crea
-    public function idEncuesta(Request $request){
+    // Redireccionar a crear la preguntas
+    public function preguntas(){
+        return view('admin.preguntas');
+    }
 
+    // Redireccionar a crear la encuesta
+    public function encuesta(Request $request){
+        return view('admin.encuesta');
+    }
+
+    // Establece el id de la encuesta
+    public function idEncuesta(Request $request)
+    {
         $tipo = $_POST['tipo'];
 
         if($tipo == "crear"){
-
-            $id = "";
             $idEncuestas = Encuesta::orderBy('id', 'desc')
                                     ->limit(1)
                                     ->get();
-
             foreach ($idEncuestas as $idEncuesta) {
                 $id = $idEncuesta->id;          
             };
 
-            if($id != ""){
-                $request->session()->put("idEncuesta",$id);
-            }
+            $request->session()->put("idEncuesta",$id);            
 
         }else if($tipo == "editar"){
             $id = $_POST['idEncuesta'];
@@ -50,7 +55,7 @@ class AdminController extends Controller
             $request->session()->put("idEncuesta",$id);
         }
         
-        return Response::json(array('msg' => "ok", 'html' => $id));
+        return Response::json(array('html' => "ok"));
     }
 
     // Establece el id de la encuesta cuando se crea
@@ -66,7 +71,7 @@ class AdminController extends Controller
 
         $request->session()->put("idAbierta",$id);
 
-        return Response::json(array('msg' => "ok", 'html' => $id));
+        return Response::json(array('html' => "ok"));
     }
 
     // Establece el id de la encuesta cuando se crea
@@ -98,88 +103,21 @@ class AdminController extends Controller
 
         }
 
-        return Response::json(array('msg' => 'ok', 'html' => $id));
+        return Response::json(array('html' => $id));
     }
 
     // Establece el id de la pregunta cuando se crea
-    public function idPreguntaCerrada(Request $request){
+    public function idRespuestaCerrada(Request $request){
 
-        $tipo = $_POST['tipo'];
+        $id = $_POST['id'];
 
-        if($tipo == "crear"){
+        $request->session()->put("idRespuestaCerrada",$id);
 
-            $id = "";
-            $idPreguntas = Cerrada::orderBy('id', 'desc')
-                                    ->limit(1)
-                                    ->get();
-
-            foreach ($idPreguntas as $idPregunta) {
-                $id = $idPregunta->id;          
-            };
-
-            if($id != ""){
-                $request->session()->put("idPreguntaCerrada",$id);
-            }
-
-        }else if($tipo == "editar"){
-            $id = $_POST['idPreguntaCerrada'];
-
-            $request->session()->put("idPreguntaCerrada",$id);
-        }
-        
-        return Response::json(array('msg' => "ok", 'html' => $tipo));
+        return Response::json(array('html' => "ok"));
     }
 
-    // Muestra las encuestas
-    public function mostrarEncuestas(Request $request){
 
-        $encuestas = Encuesta::all();
-
-        $cont = 0;
-        $html = "";
-        $html .= "<table class='table table-bordered'>
-                <thead class='thead-s'>
-                <tr>";
-
-        $html .= "<th>N°</th>
-                <th>Titulo</th>
-                <th>Descripción</th>
-                <th>Funciones</th>";
-
-        $html .= "</tr>
-                </thead>
-                <tbody>";
-
-        foreach ($encuestas as $encuesta) {
-
-            $id = $encuesta->id;
-            $titulo = $encuesta->titulo;
-            $descripcion = $encuesta->descripcion;
-            $cont++;
-
-            $html .="<tr class='border-dotted'>";
-
-            $html .= "<td>$cont</td>";
-            $html .= "<td>$titulo</td>";
-            $html .= "<td>$descripcion</td>";
-            $html .= "<td><a id='$id' href='#' class='btn btn-success' data-toggle='modal' data-target='#modalEditarEncuesta'>Editar</a><a id='$id' href='#' class='btn btn-danger'>Borrar</a></td>";
-
-            $html .= "</tr>";           
-        };
-
-        $html .= "</tbody>
-                </table>";
-
-        return Response::json(array('html' => $html,));
-
-    }
-
-    // Redireccionar a crear la encuesta
-    public function encuesta(Request $request){
-        return view('admin.encuesta');
-    }
-
-    // Redireccionar a crear la encuestas
+    // Crea la encuesta
     public function crearEncuestas(Request $request){
         
         $boolean = False;
@@ -209,94 +147,10 @@ class AdminController extends Controller
         return Response::json(array('html' => $html,));
     }
 
-    // Redireccionar a crear la preguntas
-    public function preguntas(){
-        return view('admin.preguntas');
-    }
-
-    // Muestra las preguntas
-    public function mostrarPreguntas(Request $request){
-
-        $idEncuesta = null;
-
-        if($request->session()->get("idEncuesta") ){
-            $idEncuesta = $request->session()->get("idEncuesta");
-        }
-
-        $encuestas = Encuesta::where('id', $idEncuesta)->get();
-
-        foreach ($encuestas as $encuesta) {
-            // $idEncuesta = $encuesta->id;
-            $titulo = $encuesta->titulo;
-        }
-
-        $cont = 0;
-        $html = "";
-        $html .= "<table class='table table-bordered'>
-                <thead class='thead-s'>
-                <tr>";
-
-        $html .= "<th>N°</th>
-                <th>Pregunta</th>
-                <th>Tipo</th>
-                <th>Funciones</th>";
-
-        $html .= "</tr>
-                </thead>
-                <tbody>";
-
-        $preguntas = Pregunta::where('encuesta_id', $idEncuesta)->get();
-
-        foreach ($preguntas as $pregunta) {
-            $cont++;
-
-            $idPregunta = $pregunta->id;
-
-            $abiertas = Abierta::where('pregunta_id', $idPregunta)->get();
-
-            foreach ($abiertas as $abierta) {
-
-                $id = $abierta->id;
-                $preguntaAbierta = $abierta->pregunta;
-
-                $html .="<tr class='border-dotted'>";
-
-                $html .= "<td>$cont</td>";
-                $html .= "<td>$preguntaAbierta</td>";
-                $html .= "<td>Abierta</td>";
-
-                $html .= "<td><a id='$idPregunta' href='#' class='btn btn-success' data-toggle='modal' data-target='#modalEditarPreguntaAbierta'>Editar</a><a id='$idPregunta' href='#' class='btn btn-danger'>Borrar</a></td>";
-
-                $html .= "</tr>"; 
-            }
-
-            $cerradas = Cerrada::where('pregunta_id', $idPregunta)->get();
-
-            foreach ($cerradas as $cerrada) {
-                
-                $id = $cerrada->id;
-                $preguntaCerrada = $cerrada->pregunta;
-
-                $html .="<tr class='border-dotted'>";
-
-                $html .= "<td>$cont</td>";
-                $html .= "<td>$preguntaCerrada</td>";
-                $html .= "<td>Cerrada</td>";
-
-                $html .= "<td><a id='$idPregunta' href='#' class='btn btn-success' data-toggle='modal' data-target='#modalEditarPreguntaCerrada'>Editar</a><a id='$idPregunta' href='#' class='btn btn-danger'>Borrar</a></td>";
-
-                $html .= "</tr>"; 
-            }
-        }
-
-        $html .= "</tbody>
-                </table>";
-
-        return Response::json(array('html' => $html, 'titulo' => $titulo));
-
-    }
-
-    public function crearPreguntaAbierta(Request $request){
+    // Crea la pregunta bierta
+    public function crearPreguntaAbierta(Request $request)
+    {
+        $preguntaRecibida = $_GET['preguntaAbierta'];
         $boolean = False;
         $html = "";
 
@@ -305,8 +159,6 @@ class AdminController extends Controller
         if($request->session()->get("idEncuesta")){
             $idEncuesta = $request->session()->get("idEncuesta");
         }
-
-        $preguntaRecibida = $_GET['preguntaAbierta'];
 
         $verificarPreguntaAbiertas = DB::table('encuestas')
                                         ->join('preguntas', 'encuestas.id', 'preguntas.encuesta_id')
@@ -359,7 +211,9 @@ class AdminController extends Controller
         return Response::json(array('html' => $html,));
     }
 
-    public function crearPreguntaCerrada(Request $request){
+    // Crea la pregunta cerrada
+    public function crearPreguntaCerrada(Request $request)
+    {
         $boolean = False;
         $html = "";
         $preguntaCerradaBoolean = True;
@@ -427,18 +281,17 @@ class AdminController extends Controller
         return Response::json(array('html' => $html, 'verificar' => $preguntaCerradaBoolean));
     }
 
-    public function crearRespuestaCerrada(Request $request){
-
+    // Crea la respuesta cerrada
+    public function crearRespuestaCerrada(Request $request)
+    {
         $boolean = False;
         $html = "";
-
         $idPregunta = null;
-
-        if($request->session()->get("idPreguntaCerrada")){
-            $idPregunta = $request->session()->get("idPreguntaCerrada");
-        }
-
         $respuestaRecibida = $_GET['respuestaPregunta'];
+
+        if($request->session()->get("idRespuestaCerrada")){
+            $idPregunta = $request->session()->get("idRespuestaCerrada");
+        }
 
         $verificarRespuestasCerradas = DB::table('cerradas')
                                         ->join('respuesta_cerradas', 'cerradas.id', 'respuesta_cerradas.cerrada_id')
@@ -453,13 +306,22 @@ class AdminController extends Controller
                                     
         if($boolean == False){
 
-            $idPreguntas = Cerrada::orderBy('id', 'desc')
+            $tipo = $_GET['tipo'];
+
+            if($tipo == "editar"){
+                if($request->session()->get("idCerrada")){
+                    $idPregunta = $request->session()->get("idCerrada");
+                }
+            }else{
+                $idPreguntas = Cerrada::orderBy('id', 'desc')
                                     ->limit(1)
                                     ->get();
 
-            foreach ($idPreguntas as $idPregunta) {
-                $idPregunta = $idPregunta->id;
+                foreach ($idPreguntas as $idPregunta) {
+                    $idPregunta = $idPregunta->id;
+                }
             }
+
 
             $respuestaCerrada = new RespuestaCerrada;
             $respuestaCerrada->respuesta = $respuestaRecibida;
@@ -471,64 +333,7 @@ class AdminController extends Controller
             $html = "<p>La pregunta ya existe</p>";            
         }
 
-        return Response::json(array('html' => $idPregunta,));
-    }
-
-    public function mostrarRespuestasCerradas(Request $request){
-        
-        $idPreguntaCerrada = null;
-
-        if($request->session()->get("idPreguntaCerrada") ){
-            $idPreguntaCerrada = $request->session()->get("idPreguntaCerrada");
-        }
-
-        if($request->session()->get("idCerrada") ){
-            $idCerrada = $request->session()->get("idCerrada");
-        }
-
-        $tipo = $_GET['tipo'];
-
-        if($tipo == "crear"){
-            $respuestasCerradas = RespuestaCerrada::where('cerrada_id', $idCerrada)->get();
-        }else if($tipo == "editar"){
-            $respuestasCerradas = RespuestaCerrada::where('id', $idPreguntaCerrada)->get();
-        }        
-
-        $cont = 0;
-        $html = "";
-        $html .= "<table class='table table-bordered'>
-                <thead class='thead-s'>
-                <tr>";
-
-        $html .= "<th>N°</th>
-                <th>Respuesta</th>
-                <th>Funciones</th>";
-
-        $html .= "</tr>
-                </thead>
-                <tbody>";
-
-        foreach ($respuestasCerradas as $respuestasCerrada) {
-            $cont++;
-
-            $id = $respuestasCerrada->id;
-            $respuesta = $respuestasCerrada->respuesta;
-
-            $html .="<tr class='border-dotted'>";
-
-            $html .= "<td>$cont</td>";
-            $html .= "<td>$respuesta</td>";
-
-            $html .= "<td><a id='$id' href='#' class='btn btn-success' data-toggle='modal' data-target='#modalEditarRespuestaCerrada'>Editar</a><a id='$id' href='#' class='btn btn-danger'>Borrar</a><a id='$id' href='#' class='btn btn-info'>Verdadera</a></td>";
-
-            $html .= "</tr>"; 
-        }
-
-        $html .= "</tbody>
-                </table>";
-
-        return Response::json(array('html' => $html, 'id' => $idPreguntaCerrada));
-
+        return Response::json(array('html' => "ok",));
     }
 
     public function mostrarActualizarEncuesta(Request $request)
@@ -583,6 +388,7 @@ class AdminController extends Controller
         foreach ($cerradas as $cerrada) {
             $boolean = "cerrada";
             $idCerrada = $cerrada->id;
+            $correcta = $cerrada->correcta;
             $pregunta = $cerrada->pregunta;
         }
 
@@ -595,24 +401,10 @@ class AdminController extends Controller
         }
 
         if($boolean == "cerrada"){
-            return Response::json(array('idCerrada' => $idCerrada, 'pregunta' => $pregunta, 'tipo' => $boolean));
+            return Response::json(array('idCerrada' => $idCerrada, 'pregunta' => $pregunta, 'correcta'=> "La respuesta verdadera es: ".$correcta, 'tipo' => $boolean));
         }else if($boolean == "abierta"){
             return Response::json(array('pregunta' => $pregunta, 'tipo' => $boolean));
         }
-    }
-
-    public function mostrarActualizarRespuestaCerrada(Request $request)
-    {
-        $id = $_GET['id'];
-
-        $results = RespuestaCerrada::where('id', $id)->get();
-
-        foreach ($results as $result) {
-           $id = $result->id;
-           $respuesta = $result->respuesta;
-        }
-
-        return Response::json(array('id' => $id, 'respuesta' => $respuesta));
     }
 
     public function editarPreguntaAbierta(Request $request)
@@ -636,6 +428,20 @@ class AdminController extends Controller
         $html = "Se actualizo la pregunta correctamente";
 
         return Response::json(array('html' => $html,));
+    }
+
+    public function mostrarActualizarRespuestaCerrada(Request $request)
+    {
+        $id = $_GET['id'];
+
+        $results = RespuestaCerrada::where('id', $id)->get();
+
+        foreach ($results as $result) {
+           $id = $result->id;
+           $respuesta = $result->respuesta;
+        }
+
+        return Response::json(array('respuesta' => $respuesta));
     }
 
     public function editarPreguntaCerrada(Request $request)
@@ -665,11 +471,11 @@ class AdminController extends Controller
     {
         $id = null;
 
-        if($request->session()->get("idPreguntaCerrada") ){
-            $id = $request->session()->get("idPreguntaCerrada");
-        }
-
         $respuesta = $_GET['respuestaCerrada'];
+
+        if($request->session()->get("idRespuestaCerrada") ){
+            $id = $request->session()->get("idRespuestaCerrada");
+        }        
 
         $html = "";
 
@@ -681,27 +487,31 @@ class AdminController extends Controller
 
         $html = "Se actualizo la pregunta correctamente";
 
-        return Response::json(array('html' => $html, 'id' => $id));
+        return Response::json(array('html' => $html,));
     }
 
     public function verdadera(Request $request)
     {
-        $idCerrada = $_GET['id'];
+        $id = $_GET['id'];
 
-        $results = RespuestaCerrada::where('id', $idCerrada)->get();
+        if($request->session()->get("idCerrada")){
+            $idCerrada = $request->session()->get("idCerrada");
+        }
+
+        $results = RespuestaCerrada::where('id', $id)->get();
 
         foreach ($results as $result) {
             $respuesta = $result->respuesta;
             $id = $result->cerrada_id;
         }
 
-        $verdadera = Cerrada::find($id);
+        $verdadera = Cerrada::find($idCerrada);
 
         $verdadera->correcta = $respuesta;
 
         $verdadera->save();
 
-        return Response::json(array('msg' => "ok",));
+        return Response::json(array('html' => "La respuesta verdadera es: ".$respuesta,));
     }
 
     public function eliminarEncuesta(Request $request)
@@ -806,5 +616,177 @@ class AdminController extends Controller
         
 
         return Response::json(array('msg' => "ok",));
+    }
+
+    // Muestra las encuestas
+    public function mostrarEncuestas(Request $request){
+
+        $encuestas = Encuesta::all();
+
+        $cont = 0;
+        $html = "";
+        $html .= "<table class='table table-bordered'>
+                <thead class='thead-s'>
+                <tr>";
+
+        $html .= "<th>N°</th>
+                <th>Titulo</th>
+                <th>Descripción</th>
+                <th>Funciones</th>";
+
+        $html .= "</tr>
+                </thead>
+                <tbody>";
+
+        foreach ($encuestas as $encuesta) {
+
+            $id = $encuesta->id;
+            $titulo = $encuesta->titulo;
+            $descripcion = $encuesta->descripcion;
+            $cont++;
+
+            $html .="<tr class='border-dotted'>";
+
+            $html .= "<td>$cont</td>";
+            $html .= "<td>$titulo</td>";
+            $html .= "<td>$descripcion</td>";
+            $html .= "<td><a id='$id' href='#' class='btn btn-success' data-toggle='modal' data-target='#modalEditarEncuesta'>Editar</a><a id='$id' href='#' class='btn btn-danger'>Borrar</a></td>";
+
+            $html .= "</tr>";           
+        };
+
+        $html .= "</tbody>
+                </table>";
+
+        return Response::json(array('html' => $html,));
+
+    }
+
+    // Muestra las preguntas
+    public function mostrarPreguntas(Request $request){
+
+        $idEncuesta = null;
+
+        if($request->session()->get("idEncuesta") ){
+            $idEncuesta = $request->session()->get("idEncuesta");
+        }
+
+        $encuestas = Encuesta::where('id', $idEncuesta)->get();
+
+        foreach ($encuestas as $encuesta) {
+            $titulo = $encuesta->titulo;
+        }
+
+        $cont = 0;
+        $html = "";
+        $html .= "<table class='table table-bordered'>
+                <thead class='thead-s'>
+                <tr>";
+
+        $html .= "<th>N°</th>
+                <th>Pregunta</th>
+                <th>Tipo</th>
+                <th>Funciones</th>";
+
+        $html .= "</tr>
+                </thead>
+                <tbody>";
+
+        $preguntas = Pregunta::where('encuesta_id', $idEncuesta)->get();
+
+        foreach ($preguntas as $pregunta) {
+            $cont++;
+
+            $idPregunta = $pregunta->id;
+
+            $abiertas = Abierta::where('pregunta_id', $idPregunta)->get();
+
+            foreach ($abiertas as $abierta) {
+
+                $id = $abierta->id;
+                $preguntaAbierta = $abierta->pregunta;
+
+                $html .="<tr class='border-dotted'>";
+
+                $html .= "<td>$cont</td>";
+                $html .= "<td>$preguntaAbierta</td>";
+                $html .= "<td>Abierta</td>";
+
+                $html .= "<td><a id='$idPregunta' href='#' class='btn btn-success' data-toggle='modal' data-target='#modalEditarPreguntaAbierta'>Editar</a><a id='$idPregunta' href='#' class='btn btn-danger'>Borrar</a></td>";
+
+                $html .= "</tr>"; 
+            }
+
+            $cerradas = Cerrada::where('pregunta_id', $idPregunta)->get();
+
+            foreach ($cerradas as $cerrada) {
+                
+                $id = $cerrada->id;
+                $preguntaCerrada = $cerrada->pregunta;
+
+                $html .="<tr class='border-dotted'>";
+
+                $html .= "<td>$cont</td>";
+                $html .= "<td>$preguntaCerrada</td>";
+                $html .= "<td>Cerrada</td>";
+
+                $html .= "<td><a id='$idPregunta' href='#' class='btn btn-success' data-toggle='modal' data-target='#modalEditarPreguntaCerrada'>Editar</a><a id='$idPregunta' href='#' class='btn btn-danger'>Borrar</a></td>";
+
+                $html .= "</tr>"; 
+            }
+        }
+
+        $html .= "</tbody>
+                </table>";
+
+        return Response::json(array('html' => $html, 'titulo' => $titulo));
+
+    }
+
+    // Muestra las tablas de respuestas cerradas
+    public function mostrarRespuestasCerradas(Request $request){
+        
+        $idRespuestaCerrada = null;
+
+        if($request->session()->get("idCerrada") ){
+            $idCerrada = $request->session()->get("idCerrada");
+        }        
+
+        $respuestasCerradas = RespuestaCerrada::where('cerrada_id', $idCerrada)->get();              
+
+        $cont = 0;
+        $html = "";
+        $html .= "<table class='table table-bordered'>
+                <thead class='thead-s'>
+                <tr>";
+
+        $html .= "<th>N°</th>
+                <th>Respuesta</th>
+                <th>Funciones</th>";
+
+        $html .= "</tr>
+                </thead>
+                <tbody>";
+
+        foreach ($respuestasCerradas as $respuestasCerrada) {
+            $cont++;
+            $id = $respuestasCerrada->id;
+            $respuesta = $respuestasCerrada->respuesta;
+
+            $html .="<tr class='border-dotted'>";
+
+            $html .= "<td>$cont</td>";
+            $html .= "<td>$respuesta</td>";
+
+            $html .= "<td><a id='$id' href='#' class='btn btn-success' data-toggle='modal' data-target='#modalEditarRespuestaCerrada'>Editar</a><a id='$id' href='#' class='btn btn-danger'>Borrar</a><a id='$id' href='#' class='btn btn-info'>Verdadera</a></td>";
+
+            $html .= "</tr>"; 
+        }
+
+        $html .= "</tbody>
+                </table>";
+
+        return Response::json(array('html' => $html,));
+
     }
 }

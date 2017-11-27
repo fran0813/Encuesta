@@ -20,7 +20,7 @@
                     <button class="btn btn-success" type="submit">Enviar</button>
                 </form>
 
-                <div id="respuesta1" class="col-lg-12 col-md-12 col-sm-12"></div>
+                <div id="respuestaCrearPreguntaAbierta" class="col-lg-12 col-md-12 col-sm-12"></div>
                 <br>
             </div>
 

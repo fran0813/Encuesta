@@ -1,41 +1,16 @@
-$( document ).ready(function() {
-
-	refrescar()
-
+$( document ).ready(function()
+{
+	refrescar();
 });
 
-// Funcion para establecer el id de la encuesta cuando se edita o elimina
-function idEncuesta(id) {
-
-	// var idEncuesta = $("#idEncuesta").val();
-
-	var tipo = "crear";
-
-	$.ajax({
-		headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-		method: "POST",
-		url: "/admin/idEncuesta",
-		dataType: 'json',
-		data: { tipo: tipo,
-				idEncuesta: id}
-	})
-
-	.done(function(response){
-		console.info(response.msg);
-	});
-
-}
-
-$("#tablaEncuestas").on("click", "a", function(){
-
+// Funciones de la tabla de las encuestas (Editar/Eliminar)
+$("#tablaEncuestas").on("click", "a", function()
+{
 	var clase = $(this).attr("class");
-
 	var id = $(this).attr("id");
-
 	idEncuesta(id);
 
 	if(clase == "btn btn-success"){
-
 		$.ajax({
 			method: "GET",
 			url: "/admin/mostrarActualizarEncuesta",
@@ -47,9 +22,7 @@ $("#tablaEncuestas").on("click", "a", function(){
 			$('#descripcion').val(response.descripcion);
 			$('#titulo').val(response.titulo);
 		});
-
 	}else if(clase == "btn btn-danger"){
-
 		$.ajax({
 			method: "GET",
 			url: "/admin/eliminarEncuesta",
@@ -58,23 +31,20 @@ $("#tablaEncuestas").on("click", "a", function(){
 		})
 
 		.done(function(response) {
-			console.info(response.msg);
 			refrescar();
 		});
 	}
-
 });	
 
 // Editar encuestas
-$("#formEditarEncuesta").on("submit", function(){
-
+$("#formEditarEncuesta").on("submit", function()
+{
 	var titulo = $("#titulo").val();
 	var descripcion = $("#descripcion").val();
 
 	if(titulo == "" || descripcion == ""){
 		$('#respuesta').html("Por favor ingrese todos los datos");
 	}else{
-
 		$.ajax({
 			headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
 			method: "GET",
@@ -88,14 +58,32 @@ $("#formEditarEncuesta").on("submit", function(){
 			$('#respuesta').html(response.html);	
 			refrescar();
 		});
-
 	}
-
 	return false;
-
 });
 
-function refrescar() {
+// Establece el id de la encuesta cuando se editar o elimina
+function idEncuesta(id)
+{
+	var tipo = "editar";
+
+	$.ajax({
+		headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+		method: "POST",
+		url: "/admin/idEncuesta",
+		dataType: 'json',
+		data: { tipo: tipo,
+				idEncuesta: id}
+	})
+
+	.done(function(response){
+		console.info(response.msg);
+	});
+}
+
+// Refresca la tabla de las encuestas
+function refrescar()
+{
 	$.ajax({
 		method: "GET",
 		url: "/admin/mostrarEncuestas",
@@ -103,11 +91,12 @@ function refrescar() {
 	})
 
 	.done(function(response) {
-		// console.info(response)
 		$('#tablaEncuestas').html(response.html).trigger("change");
 	});
 }
 
-function redirigirPreguntas() {
+// Redirige a las preguntas
+function redirigirPreguntas()
+{
 	document.location ="/admin/preguntas";
 }

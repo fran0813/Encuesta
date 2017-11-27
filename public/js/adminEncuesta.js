@@ -1,17 +1,17 @@
-$( document ).ready(function() {
+$( document ).ready(function()
+{
 
 });
 
-// Crear la encuestas
-$("#formCrearEncuesta").on("submit", function(){
-
+// Crea la encuesta
+$("#formCrearEncuesta").on("submit", function()
+{
 	var titulo = $("#titulo").val();
 	var descripcion = $("#descripcion").val();
 
 	if(titulo == "" || descripcion == ""){
 		$('#respuesta').html("Por favor ingrese todos los datos");
 	}else{
-
 		$.ajax({
 			headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
 			method: "GET",
@@ -24,16 +24,15 @@ $("#formCrearEncuesta").on("submit", function(){
 		.done(function(response){
 			$('#respuesta').html(response.html);	
 			idEncuesta();
+			redirigirPreguntas();
 		});
-
 	}
-
 	return false;
-
 });
 
-function idEncuesta() {
-	
+// Establece el id de la encuesta
+function idEncuesta()
+{	
 	var tipo = "crear";
 
 	$.ajax({
@@ -45,11 +44,14 @@ function idEncuesta() {
 	})
 
 	.done(function(response){
-		console.info(response.msg);
-	});
-
-	setTimeout(function(){ 
-		document.location ="/admin/preguntas";
-	}, 2000);
+		
+	});	
 }
 
+// Redirige a las preguntas
+function redirigirPreguntas()
+{
+	setTimeout(function(){ 
+		document.location ="/admin/preguntas";
+	}, 1500);
+}

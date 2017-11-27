@@ -43,7 +43,7 @@
         <br>
         <br>
 
-        <div class="col-md-12 col-ls-12 col-sm-12"id="tablaEncuestas"></div>
+        <div class="col-md-12 col-ls-12 col-sm-12" id="tablaEncuestas"></div>
     </div>
 </div>
 @endsection

@@ -31,7 +31,7 @@ Route::group(['prefix' => 'admin'], function(){
 	Route::get('/crearRespuestaCerrada', 'AdminController@crearRespuestaCerrada');
 	Route::get('/mostrarRespuestasCerradas', 'AdminController@mostrarRespuestasCerradas');
 	Route::post('/idEncuesta', 'AdminController@idEncuesta');
-	Route::post('/idPreguntaCerrada', 'AdminController@idPreguntaCerrada');
+	Route::post('/idRespuestaCerrada', 'AdminController@idRespuestaCerrada');
 	Route::post('/idAbierta', 'AdminController@idAbierta');
 	Route::post('/idCerrada', 'AdminController@idCerrada');
 	Route::get('/mostrarActualizarEncuesta', 'AdminController@mostrarActualizarEncuesta');
