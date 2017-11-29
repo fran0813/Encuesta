@@ -15,10 +15,8 @@ class CreateResponderEncuestasTable extends Migration
     {
         Schema::create('responder_encuestas', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('titulo');
-            $table->string('descripcion');
-            $table->integer('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->integer('encuesta_id')->unsigned();
+            $table->foreign('encuesta_id')->references('id')->on('encuestas');
             $table->timestamps();
         });
     }

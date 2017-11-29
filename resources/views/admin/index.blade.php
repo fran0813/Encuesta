@@ -1,40 +1,95 @@
-@extends('layouts.baseAdmin')
+@if (auth()->user()->hasRole('admin'))
 
-@section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            {{-- <div class="panel panel-default"> --}}
-                {{-- <div class="panel-heading">Dashboard</div> --}}
+    @extends('layouts.base')
 
-                {{-- <div class="panel-body">
-                    @if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+    @section('navbar')
+    <nav class="navbar navbar-default navbar-static-top">
+        <div class="container">
+            <div class="navbar-header">
 
-                    You are logged in! Admin
-                </div> --}}
-            {{-- </div> --}}
-        {{-- </div> --}}
+                <!-- Collapsed Hamburger -->
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse" aria-expanded="false">
+                    <span class="sr-only">Toggle Navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
 
-        <div class="col-md-12 col-ls-12 col-sm-12"></div>
+                <!-- Branding Image -->
+                <a class="navbar-brand" href="{{ url('/') }}">
+                    {{ config('app.name', 'Laravel') }}
+                </a>
+            </div>
+            
 
-        <div class="col-md-12 col-ls-12 col-sm-12">
-            <center><a class="btn btn-info" href="{{ url('/admin/encuesta') }}">Crear encuesta</a></center>
+            <div class="collapse navbar-collapse" id="app-navbar-collapse">
+                <!-- Left Side Of Navbar -->
+                <ul class="nav navbar-nav">
+                    &nbsp;
+                    
+                    <ul class="nav navbar-nav navbar-left">
+                        <li class="text-left"><a href="{{ url('/admin/encuesta') }}">Encuestas</a></li> 
+                    </ul>
+                    <ul class="nav navbar-nav navbar-left">
+                        <li><a href="{{ url('/admin/tabulacion') }}">Tabulaciones</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-left">
+                        <li class="text-left"><a href="{{ url('/admin/responder') }}">Responder</a></li> 
+                    </ul>
+                </ul>
+
+                <!-- Right Side Of Navbar -->
+                <ul class="nav navbar-nav navbar-right">  
+
+                    <!-- Authentication Links -->
+                    @guest
+                        <li><a href="{{ route('login') }}">Login</a></li>
+                        <li><a href="{{ route('register') }}">Register</a></li>
+                    @else
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
+                                {{ Auth::user()->name }} <span class="caret"></span>
+                            </a>
+
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="{{ route('logout') }}"
+                                        onclick="event.preventDefault();
+                                                 document.getElementById('logout-form').submit();">
+                                        Logout
+                                    </a>
+
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        {{ csrf_field() }}
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                    @endguest
+                </ul>
+            </div>
         </div>
+    </nav>
+    @endsection
 
-        <br>
-        <br>
+    @section('content')
+    <div class="container">
+        <div class="row">            
+            <div class="col-md-12 col-ls-12 col-sm-12"></div>
 
-        <div class="col-md-12 col-ls-12 col-sm-12" id="tablaEncuestas"></div>
+            @include('layouts.status')
+
+            <div class="col-md-12 col-ls-12 col-sm-12">
+                
+            </div>           
+        </div>
     </div>
-</div>
-@endsection
+    @endsection
 
-@include('admin.modal.modalEditarEncuesta')
+    @include('admin.modal.modalEditarEncuesta')
 
-@section('javascript')
-    <script src="{{ asset('js/admin.js') }}"></script>
-@endsection
+@else
+    <div class="col-md-12 col-ls-12 col-sm-12">
+        <center><h1>No tiene permisos para ver esta página</h1></center>
+    </div>
+@endif

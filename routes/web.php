@@ -23,6 +23,7 @@ Route::group(['prefix' => 'admin'], function(){
 	Route::get('/', 'AdminController@index')->middleware('auth');
 	Route::get('/mostrarEncuestas', 'AdminController@mostrarEncuestas');
 	Route::get('/encuesta', 'AdminController@encuesta');
+	Route::get('/crearEncuesta', 'AdminController@crearEncuesta');
 	Route::get('/crearEncuestas', 'AdminController@crearEncuestas');
 	Route::get('/preguntas', 'AdminController@preguntas');
 	Route::get('/mostrarPreguntas', 'AdminController@mostrarPreguntas');

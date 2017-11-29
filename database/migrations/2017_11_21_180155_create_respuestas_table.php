@@ -15,7 +15,7 @@ class CreateRespuestasTable extends Migration
     {
         Schema::create('respuestas', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('pregunta');
+            $table->integer('pregunta_id')->unsigned();
             $table->string('respuesta');
             $table->integer('realizarEncuesta_id')->unsigned();
             $table->foreign('realizarEncuesta_id')->references('id')->on('responder_encuestas');

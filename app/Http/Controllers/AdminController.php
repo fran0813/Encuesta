@@ -29,9 +29,14 @@ class AdminController extends Controller
         return view('admin.preguntas');
     }
 
-    // Redireccionar a crear la encuesta
+    // Redireccionar a la encuesta
     public function encuesta(Request $request){
         return view('admin.encuesta');
+    }
+
+    // Redireccionar a crear la encuesta
+    public function crearEncuesta(Request $request){
+        return view('admin.crearEncuesta');
     }
 
     // Establece el id de la encuesta
