@@ -1,4 +1,4 @@
-@if (auth()->user()->hasRole('user'))
+@if (auth()->user()->hasRole('User'))
 
     @extends('layouts.base')
 

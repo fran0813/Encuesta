@@ -383,9 +383,7 @@ class AdminController extends Controller
     public function mostrarActualizarPregunta(Request $request)
     {
         $id = $_GET['id'];
-
         $html = "";
-
         $boolean = "";
 
         $cerradas = Cerrada::where('pregunta_id', $id)->get();
