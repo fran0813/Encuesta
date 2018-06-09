@@ -9,25 +9,20 @@ $("#formCrearPreguntaAbierta").on("submit", function()
 {
 	var preguntaAbierta = $("#preguntaAbierta").val();
 
-	if(preguntaAbierta == ""){
-		$('#respuestaCrearPreguntaAbierta').html("Por favor ingrese la pregunta");
-	}else{
+	$.ajax({
+		headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+		method: "GET",
+		url: "/admin/crearPreguntaAbierta",
+		dataType: 'json',
+		data: { preguntaAbierta: preguntaAbierta }
+	})
 
-		$.ajax({
-			headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-			method: "GET",
-			url: "/admin/crearPreguntaAbierta",
-			dataType: 'json',
-			data: { preguntaAbierta: preguntaAbierta }
-		})
-
-		.done(function(response) {
-			$('#respuestaCrearPreguntaAbierta').html(response.html);
-			refrescarPreguntas();
-			$("#preguntaAbierta").val("");
-		});
-
-	}
+	.done(function(response) {
+		$('#respuestaCrearPreguntaAbierta').html(response.html);
+		refrescarPreguntas();
+		$("#preguntaAbierta").val("");
+	});
+	
 	return false;
 });
 
@@ -37,30 +32,28 @@ $("#formCrearPreguntaCerrada").on("submit", function()
 	var preguntaCerrada = $("#preguntaCerrada").val();
 	var id = "crear";
 
-	if(preguntaCerrada == ""){
-		$('#respuestaCrearPreguntaCerrada').html("Por favor ingrese la pregunta");
-	}else{
-		$.ajax({
-			headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-			method: "GET",
-			url: "/admin/crearPreguntaCerrada",
-			dataType: 'json',
-			data: { preguntaCerrada: preguntaCerrada }
-		})
+	$.ajax({
+		headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+		method: "GET",
+		url: "/admin/crearPreguntaCerrada",
+		dataType: 'json',
+		data: { preguntaCerrada: preguntaCerrada }
+	})
 
-		.done(function(response) {
-			$('#respuestaCrearPreguntaCerrada').html(response.html);
+	.done(function(response) {
+		$('#respuestaCrearPreguntaCerrada').html(response.html);
 
-			if(response.verificar == true){
-				$("#preguntaCerrada").prop('disabled', true);
-				$("#btnPreguntaCerrada").prop('disabled', true);
-				$("#respuestaPregunta").prop('disabled', false);
-				$("#btnRespuestaCerrada").prop('disabled', false);
-				idCerrada(id);
-				refrescarRespuestasCerradas();
-			}
-		});
-	}
+		if(response.verificar == true){
+			$("#preguntaCerrada").prop('disabled', true);
+			$("#btnPreguntaCerrada").prop('disabled', true);
+			$("#respuestaPregunta").prop('disabled', false);
+			$("#btnRespuestaCerrada").prop('disabled', false);
+			idCerrada(id);
+			refrescarRespuestasCerradas();
+			refrescarPreguntas();
+		}
+	});
+
 	return false;
 });
 
@@ -70,22 +63,21 @@ $("#formCrearRespuestaCerrada").on("submit", function(){
 	var tipo = "crear";
 	var respuestaPregunta = $("#respuestaPregunta").val();
 
-	if(respuestaPregunta == ""){
-		$('#respuestaCrearRespuestaCerrada').html("Por favor ingrese la respuesta");
-	}else{
-		$.ajax({
-			headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-			method: "GET",
-			url: "/admin/crearRespuestaCerrada",
-			dataType: 'json',
-			data: { respuestaPregunta: respuestaPregunta,
-					tipo: tipo }
-		})
+	$.ajax({
+		headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+		method: "GET",
+		url: "/admin/crearRespuestaCerrada",
+		dataType: 'json',
+		data: { respuestaPregunta: respuestaPregunta,
+				tipo: tipo }
+	})
 
-		.done(function(response) {
-			refrescarRespuestasCerradas();			
-		});		
-	}
+	.done(function(response) {
+		refrescarRespuestasCerradas();
+		$("#respuestaPregunta").val("");
+		$("#respuestaCrearRespuestaCerrada").html(response.html);
+	});		
+	
 	return false;
 });
 
@@ -95,23 +87,21 @@ $("#formCrearRespuestaCerrada2").on("submit", function(){
 	var tipo = "editar";
 	var respuestaPregunta = $("#respuestaPregunta2").val();
 
-	if(respuestaPregunta == ""){
-		$('#respuestaCrearRespuestaCerrada2').html("Por favor ingrese la respuesta");
-	}else{
-		$.ajax({
-			headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-			method: "GET",
-			url: "/admin/crearRespuestaCerrada",
-			dataType: 'json',
-			data: { respuestaPregunta: respuestaPregunta,
-					tipo: tipo }
-		})
+	$.ajax({
+		headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+		method: "GET",
+		url: "/admin/crearRespuestaCerrada",
+		dataType: 'json',
+		data: { respuestaPregunta: respuestaPregunta,
+				tipo: tipo }
+	})
 
-		.done(function(response) {
-			var tipo = "crear";
-			refrescarRespuestasCerradas();			
-		});		
-	}
+	.done(function(response) {
+		refrescarRespuestasCerradas();
+		$("#respuestaPregunta2").val("");			
+		$("#respuestaCrearRespuestaCerrada2").html(response.html);			
+	});		
+
 	return false;
 });
 

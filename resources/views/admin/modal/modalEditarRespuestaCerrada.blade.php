@@ -15,7 +15,7 @@
 
                 <form id="formEditarRespuestaCerrada">
                     <label class="form-control" for="respuestaCerrada2">Respuesta</label>
-                    <input class="form-control" type="text" id="respuestaCerrada2" placeholder="Ingrese la pregunta">
+                    <input class="form-control" type="text" id="respuestaCerrada2" placeholder="Ingrese la pregunta" required>
                     <br>
                     <button class="btn btn-success" type="submit">Enviar</button>
                 </form>

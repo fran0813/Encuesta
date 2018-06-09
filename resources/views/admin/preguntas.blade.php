@@ -1,4 +1,4 @@
-@extends('layouts.base')
+@extends('admin.index')
 
 @section('content')
 <div class="container">
@@ -8,7 +8,6 @@
         @include('layouts.status')
 
         <div class="col-md-12 col-ls-12 col-sm-12"></div>
-
 
         <div class="col-md-12 col-ls-12 col-sm-12">
             <label class="form-control" for="">Crear pregunta</label>

@@ -9,24 +9,21 @@ $("#formCrearEncuesta").on("submit", function()
 	var titulo = $("#titulo").val();
 	var descripcion = $("#descripcion").val();
 
-	if(titulo == "" || descripcion == ""){
-		$('#respuesta').html("Por favor ingrese todos los datos");
-	}else{
-		$.ajax({
-			headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-			method: "GET",
-			url: "/admin/crearEncuestas",
-			dataType: 'json',
-			data: { titulo: titulo,
-					descripcion: descripcion}
-		})
+	$.ajax({
+		headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+		method: "GET",
+		url: "/admin/crearEncuestas",
+		dataType: 'json',
+		data: { titulo: titulo,
+				descripcion: descripcion}
+	})
 
-		.done(function(response){
-			$('#respuesta').html(response.html);	
-			idEncuesta();
-			redirigirPreguntas();
-		});
-	}
+	.done(function(response){
+		$('#respuesta').html(response.html);	
+		idEncuesta();
+		redirigirPreguntas();
+	});
+
 	return false;
 });
 

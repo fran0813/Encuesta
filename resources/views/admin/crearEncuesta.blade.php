@@ -1,4 +1,4 @@
-@extends('layouts.base')
+@extends('admin.index')
 
 @section('content')
 <div class="container">
@@ -9,13 +9,12 @@
 
         <div class="col-md-12 col-ls-12 col-sm-12"></div>
 
-
-       <div class="col-md-12 col-ls-12 col-sm-12">
+        <div class="col-md-12 col-ls-12 col-sm-12">
             <center>
                 <form id="formCrearEncuesta">
                     {{ csrf_field() }}
                     <label class="form-control" for="titulo">Titulo de la encuesta</label>
-                    <input class="form-control" type="text" id="titulo" placeholder="Ingrese el titulo">
+                    <input class="form-control" type="text" id="titulo" placeholder="Ingrese el titulo" required>
                     <br>
                     <label class="form-control" for="descripcion">Descripción</label>
                     <textarea class="form-control" style="resize: none; height: 70px" id="descripcion" placeholder="Ingrese la descripción de la encuesta"></textarea>

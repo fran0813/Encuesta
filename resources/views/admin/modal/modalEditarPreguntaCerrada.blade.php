@@ -15,7 +15,7 @@
 
                 <form id="formEditarPreguntaCerrada">
                     <label class="form-control" for="preguntaCerrada2">Pregunta</label>
-                    <input class="form-control" type="text" id="preguntaCerrada2" placeholder="Ingrese la pregunta">
+                    <input class="form-control" type="text" id="preguntaCerrada2" placeholder="Ingrese la pregunta" required>
                     <button id="btnPreguntaCerrada2" class="btn btn-success" type="submit">Enviar</button>
                     <br>
                 </form>
@@ -29,10 +29,9 @@
 
                 <form id="formCrearRespuestaCerrada2">
                     <label class="form-control" for="respuestaPregunta2">Respuesta</label>
-                    <input class="form-control" type="text" id="respuestaPregunta2" placeholder="Ingrese las posibles respuestas" disabled="">
+                    <input class="form-control" type="text" id="respuestaPregunta2" placeholder="Ingrese las posibles respuestas" disabled="" required>
                     <br>
                     <button id="btnRespuestaCerrada2" class="btn btn-success" type="submit" disabled="">Enviar</button>
-                    <button class="btn btn-danger" onclick="limpiar();">Limpiar</button>
                 </form>
                 
                 <br><br>

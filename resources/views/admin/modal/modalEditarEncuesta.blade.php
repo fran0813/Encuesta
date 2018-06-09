@@ -15,7 +15,7 @@
 
                 <form id="formEditarEncuesta">
                     <label class="form-control" for="tituloEncuesta">Titulo de la encuesta</label>
-                    <input class="form-control" type="text" id="titulo" placeholder="Ingrese el titulo" value="">
+                    <input class="form-control" type="text" id="titulo2" placeholder="Ingrese el titulo" value="" required>
                     <br>
                     <label class="form-control" for="descripcion">Descripción</label>
                     <textarea class="form-control" style="resize: none; height: 70px" id="descripcion" placeholder="Ingrese la descripción de la encuesta"></textarea>
@@ -25,7 +25,7 @@
 
                 <button class="btn btn-info" onclick="redirigirPreguntas();">Editar preguntas</button>
 
-                <div id="respuesta" class="col-lg-12 col-md-12 col-sm-12"></div>
+                <div id="respuesta2" class="col-lg-12 col-md-12 col-sm-12"></div>
                 <br>
             </div>
 

@@ -21,28 +21,42 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['prefix' => 'admin'], function(){
 	Route::get('/', 'AdminController@index')->middleware('auth');
-	Route::get('/mostrarEncuestas', 'AdminController@mostrarEncuestas');
 	Route::get('/encuesta', 'AdminController@encuesta');
+	Route::get('/preguntas', 'AdminController@preguntas');
+	Route::get('/responder', 'AdminController@responder');
+	Route::get('/responderEncuesta', 'AdminController@responderEncuesta');
+
 	Route::get('/crearEncuesta', 'AdminController@crearEncuesta');
 	Route::get('/crearEncuestas', 'AdminController@crearEncuestas');
-	Route::get('/preguntas', 'AdminController@preguntas');
-	Route::get('/mostrarPreguntas', 'AdminController@mostrarPreguntas');
 	Route::get('/crearPreguntaAbierta', 'AdminController@crearPreguntaAbierta');
 	Route::get('/crearPreguntaCerrada', 'AdminController@crearPreguntaCerrada');
 	Route::get('/crearRespuestaCerrada', 'AdminController@crearRespuestaCerrada');
+
+	Route::post('/responderPreguntas', 'AdminController@responderPreguntas');
+	
+	Route::get('/mostrarEncuestas', 'AdminController@mostrarEncuestas');
+	Route::get('/mostrarPreguntas', 'AdminController@mostrarPreguntas');
 	Route::get('/mostrarRespuestasCerradas', 'AdminController@mostrarRespuestasCerradas');
+	Route::get('/mostrarEncuestasResponder', 'AdminController@mostrarEncuestasResponder');
+	Route::get('/mostrarPreguntasResponder', 'AdminController@mostrarPreguntasResponder');
+
+	Route::get('/mostrarActualizarEncuesta', 'AdminController@mostrarActualizarEncuesta');
+	Route::get('/mostrarActualizarPregunta', 'AdminController@mostrarActualizarPregunta');
+	Route::get('/mostrarActualizarRespuestaCerrada', 'AdminController@mostrarActualizarRespuestaCerrada');
+	
+	Route::get('/editarEncuesta', 'AdminController@editarEncuesta');
+	Route::get('/editarPreguntaAbierta', 'AdminController@editarPreguntaAbierta');
+	Route::get('/editarPreguntaCerrada', 'AdminController@editarPreguntaCerrada');
+	Route::get('/editarRespuestaCerrada', 'AdminController@editarRespuestaCerrada');
+
 	Route::post('/idEncuesta', 'AdminController@idEncuesta');
 	Route::post('/idRespuestaCerrada', 'AdminController@idRespuestaCerrada');
 	Route::post('/idAbierta', 'AdminController@idAbierta');
 	Route::post('/idCerrada', 'AdminController@idCerrada');
-	Route::get('/mostrarActualizarEncuesta', 'AdminController@mostrarActualizarEncuesta');
-	Route::get('/editarEncuesta', 'AdminController@editarEncuesta');
-	Route::get('/mostrarActualizarPregunta', 'AdminController@mostrarActualizarPregunta');
-	Route::get('/mostrarActualizarRespuestaCerrada', 'AdminController@mostrarActualizarRespuestaCerrada');
-	Route::get('/editarPreguntaAbierta', 'AdminController@editarPreguntaAbierta');
-	Route::get('/editarPreguntaCerrada', 'AdminController@editarPreguntaCerrada');
-	Route::get('/editarRespuestaCerrada', 'AdminController@editarRespuestaCerrada');
+	
 	Route::get('/verdadera', 'AdminController@verdadera');
+	Route::post('/verificar1', 'AdminController@verificar1');
+
 	Route::get('/eliminarEncuesta', 'AdminController@eliminarEncuesta');
 	Route::get('/eliminarPregunta', 'AdminController@eliminarPregunta');
 	Route::get('/eliminarRespuestaCerrada', 'AdminController@eliminarRespuestaCerrada');

@@ -19,8 +19,8 @@ $("#tablaEncuestas").on("click", "a", function()
 		})
 
 		.done(function(response) {
+			$('#titulo2').val(response.titulo);
 			$('#descripcion').val(response.descripcion);
-			$('#titulo').val(response.titulo);
 		});
 	}else if(clase == "btn btn-danger"){
 		$.ajax({
@@ -39,26 +39,23 @@ $("#tablaEncuestas").on("click", "a", function()
 // Editar encuestas
 $("#formEditarEncuesta").on("submit", function()
 {
-	var titulo = $("#titulo").val();
+	var titulo = $("#titulo2").val();
 	var descripcion = $("#descripcion").val();
+	
+	$.ajax({
+		headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+		method: "GET",
+		url: "/admin/editarEncuesta",
+		dataType: 'json',
+		data: { titulo: titulo,
+				descripcion: descripcion}
+	})
 
-	if(titulo == "" || descripcion == ""){
-		$('#respuesta').html("Por favor ingrese todos los datos");
-	}else{
-		$.ajax({
-			headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-			method: "GET",
-			url: "/admin/editarEncuesta",
-			dataType: 'json',
-			data: { titulo: titulo,
-					descripcion: descripcion}
-		})
+	.done(function(response){
+		$('#respuesta2').html(response.html);	
+		refrescar();
+	});
 
-		.done(function(response){
-			$('#respuesta').html(response.html);	
-			refrescar();
-		});
-	}
 	return false;
 });
 

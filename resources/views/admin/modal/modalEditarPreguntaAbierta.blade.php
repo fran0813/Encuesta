@@ -15,7 +15,7 @@
 
                 <form id="formEditarPreguntaAbierta">
                     <label class="form-control" for="preguntaAbierta2">Pregunta</label>
-                    <input class="form-control" type="text" id="preguntaAbierta2" placeholder="Ingrese la pregunta">
+                    <input class="form-control" type="text" id="preguntaAbierta2" placeholder="Ingrese la pregunta" required>
                     <br>
                     <button class="btn btn-success" type="submit">Enviar</button>
                 </form>
