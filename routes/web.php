@@ -25,6 +25,8 @@ Route::group(['prefix' => 'admin'], function(){
 	Route::get('/preguntas', 'AdminController@preguntas');
 	Route::get('/responder', 'AdminController@responder');
 	Route::get('/responderEncuesta', 'AdminController@responderEncuesta');
+	Route::get('/tabulacion', 'AdminController@tabulacion');
+	Route::get('/graficas', 'AdminController@graficas');
 
 	Route::get('/crearEncuesta', 'AdminController@crearEncuesta');
 	Route::get('/crearEncuestas', 'AdminController@crearEncuestas');
@@ -39,6 +41,9 @@ Route::group(['prefix' => 'admin'], function(){
 	Route::get('/mostrarRespuestasCerradas', 'AdminController@mostrarRespuestasCerradas');
 	Route::get('/mostrarEncuestasResponder', 'AdminController@mostrarEncuestasResponder');
 	Route::get('/mostrarPreguntasResponder', 'AdminController@mostrarPreguntasResponder');
+	Route::get('/mostrarTabulaciones', 'AdminController@mostrarTabulaciones');
+	Route::get('/mostrarGraficas', 'AdminController@mostrarGraficas');
+	Route::get('/mostrarG', 'AdminController@mostrarG');
 
 	Route::get('/mostrarActualizarEncuesta', 'AdminController@mostrarActualizarEncuesta');
 	Route::get('/mostrarActualizarPregunta', 'AdminController@mostrarActualizarPregunta');

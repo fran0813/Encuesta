@@ -1,167 +1,82 @@
-@font-face {
-  font-family: "Varela";
-  src: url("../fonts/VarelaRound-Regular.ttf");
+.loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #db382f;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
 }
 
-body{
-  font-family: 'Open Sans', sans-serif;
-  font-size: 14px;
-  background-image: url(../img/bg.jpg);
-  background-repeat: repeat-y repeat-x;
-  background-attachment: fixed;
-  background-color: #f8f9fb;
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
 }
 
-/* Slider */
-.carousel-inner > .item > img,
-  .carousel-inner > .item > a > img {
-     /* width: 70%;*/
-      margin: auto;
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
-/* Color del footer*/
-.color-footer{
-  background-image: url(../img/textura1.png);
-  background-color: #312e29;
-  text-align: center;
-  padding-bottom: 21px;
-    padding-top: 15px;
+/* chart */
+.boton-bar{
+  background-image: url(../img/bar-icon.png);
+  background-color: #ffffff00;
+    border: 0px;
+  width: 50px;
+  height: 50px;
 }
 
-/* Color del copyrigth*/
-.color-footer-leter {
-  color: #FFFFFF;
+.boton-bar:hover{
+  background-image: url(../img/bar-icon-hover.png);
+  background-color: #ffffff00;
+    border: 0px;
+  width: 50px;
+  height: 50px;
+}
+.boton-donut{
+  background-image: url(../img/donut-icon.png);
+  background-color: #ffffff00;
+    border: 0px;
+  width: 50px;
+  height: 50px;
 }
 
-/* texto footer */
-.text-footer{
-    font-size: 15px;
-    color: #e2e1e1;
-    margin-right: 10px;
-    margin-left: 10px;
+.boton-donut:hover{
+  background-image: url(../img/donut-icon-hover.png);
+  background-color: #ffffff00;
+    border: 0px;
+  width: 50px;
+  height: 50px;
+}
+.boton-combo{
+  background-image: url(../img/combo-icon.png);
+  background-color: #ffffff00;
+    border: 0px;
+  width: 50px;
+  height: 50px;
 }
 
-/* Estilo del navbar y todo lo que lo integra */
-
-.navbar-default {
-  font-family: "Varela";
-  background: url(../img/nav.png);
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-    background-color: rgba(248, 248, 248, 0);
-    border-color: rgba(248, 248, 248, 0);
+.boton-combo:hover{
+  background-image: url(../img/combo-icon-hover.png);
+  background-color: #ffffff00;
+    border: 0px;
+  width: 50px;
+  height: 50px;
+}
+.boton-scatter{
+  background-image: url(../img/scatter-icon.png);
+  background-color: #ffffff00;
+    border: 0px;
+  width: 50px;
+  height: 50px;
 }
 
-.container-fluid {
-    padding-left: 7%;
-}
-
-.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>.active>a:hover {
-    color: #e4e4e4;
-    background-color: rgba(222, 148, 138, 0.27);
-}
-
-.navbar-default .navbar-nav>li>a {
-    color: #fff;
-}
-
-.nav-barra{
-  background: url(../img/barra1.png);
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-}
-
-/* Estilo nombre del proyecto */
-.text-namep{
-  font-family: "Varela";
-  font-size: 28px;
-    color: #555;
-    text-align: center;
-    padding-top: 20px;
-}
-
-/* Estilo titulo de index */
-.titulo{
-  font-family: "Varela";
-  margin-top: 12%;
-  font-size: 78px;
-    font-weight: 100;
-    color: #555;
-    line-height: 50px;
-}
-
-/* Boton rojo */
-.btn-danger {
-    color: #fff;
-    background-color: #e51a2b;
-    border-color: #ce1828;
-}
-
-/* Boton azul oscuro */
-.btn-azul{
-  color: #fff;
-    background-color: #14505a;
-    border-color: #092c33;
-}
-.btn-azul:focus,
-.btn-azul.focus {
-  color: #fff;
-  background-color: #1c7786;
-  border-color: #136777;
-}
-.btn-azul:hover {
-  color: #fff;
-  background-color: #1c7786;
-  border-color: #136777;
-}
-
-/* Submenu estilos titulo*/
-.sub-titulo{
-  color: #fff;
-    background-color: #e72b30;
-    font-family: "Varela";
-  padding: 10px 10px 2px 10px;
-  font-size: 18px;
-  text-align: center;
-  
-}
-
-/* Submenu estilos cuerpo*/
-.sub-cuerpo{
-  color: #fff;
-    background-color: #e72b30;
-    font-family: "Varela";
-  padding: 10px 10px 2px 10px;
-  font-size: 15px;
-  box-shadow: inset 0px 4px 4px rgba(56, 48, 48, 0.39);
-}
-
-/* Submenu estilos textos*/
-.sub-texto-cajon{
-  padding-top: 10px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.23); 
-}
-
-/* texto blanco */
-.blanco{
-  color: #fff;
-}
-
-/* Thead estilo */
-.thead-s{
-  background: #e8e8e8;
-    color: #383631;
-    font-size: 17px;
-    font-family: "Varela";
-}
-
-/* borde punteado tr */
-.border-dotted{
-  border-bottom-style: dotted;
-    border-bottom-width: 2px;
-}
-
-.color-breadcrumbs > a{
-  color: #e9473f;
+.boton-scatter:hover{
+  background-image: url(../img/scatter-icon-hover.png);
+  background-color: #ffffff00;
+    border: 0px;
+  width: 50px;
+  height: 50px;
 }

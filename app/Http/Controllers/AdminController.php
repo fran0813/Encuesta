@@ -51,6 +51,17 @@ class AdminController extends Controller
         return view('admin.responderEncuesta');
     }
 
+    // Redireccionar a tabulacion
+    public function tabulacion(){
+        return view('admin.tabulacion');
+    }
+
+     // Redireccionar a graficas
+    public function graficas(){
+        return view('admin.graficas');
+    }
+
+
     // Establece el id de la encuesta
     public function idEncuesta(Request $request)
     {
@@ -978,10 +989,12 @@ class AdminController extends Controller
             $respuesta = new Respuesta;         
             $respuesta->pregunta_id = $idPregunta;
             if ($booleanA == True) {
-                $respuesta->respuesta = $request->input($preguntaA);    
+                $respuesta->respuesta = $request->input($preguntaA); 
+                $respuesta->tipo = "abierta";    
             }else{
                 $respuesta->respuesta = $request->input($preguntaC);
-            } 
+                $respuesta->tipo = "cerrada"; 
+            }                           
             $respuesta->realizarEncuesta_id = $id;               
             $respuesta->save();       
      
@@ -1013,6 +1026,272 @@ class AdminController extends Controller
         }
 
         return Response::json(array('html' => $boolean));
+    }
+
+    // Muestra las tabulacion
+    public function mostrarTabulaciones(Request $request){
+
+        $encuestas = Encuesta::all();
+        $boolean = False;
+
+        $cont = 0;
+        $html = "";
+        $html .= "<table class='table table-bordered'>
+                <thead class='thead-s'>
+                <tr>";
+
+        $html .= "<th>N°</th>
+                <th>Titulo</th>
+                <th>Descripción</th>
+                <th>Funciones</th>";
+
+        $html .= "</tr>
+                </thead>
+                <tbody>";
+
+        $idUser = Auth::user()->id;
+        $boolean = False;        
+
+        foreach ($encuestas as $encuesta) {
+
+            $id = $encuesta->id;
+            $titulo = $encuesta->titulo;
+            $descripcion = $encuesta->descripcion;
+            $cont++;
+
+            $html .="<tr class='border-dotted'>";
+
+            $html .= "<td>$cont</td>";
+            $html .= "<td>$titulo</td>";
+            $html .= "<td>$descripcion</td>";
+
+            $verificar = ResponderEncuesta::where('user_id', $idUser)
+                                        ->where('encuesta_id', $id)
+                                        ->get();
+            foreach ($verificar as $verifica) {
+                $boolean = True;
+            }
+
+            $html .= "<td><a id='$id' href='#' class='btn btn-success' value='tabulacion'>Tabulación</a></td>";
+
+            $html .= "</tr>";           
+        };
+
+        $html .= "</tbody>
+                </table>";
+
+        return Response::json(array('html' => $html,));
+
+    }
+
+    // Muestra las tablas graficas
+    public function mostrarGraficas(Request $request)
+    {
+        $html = "";
+        $idEncuesta = null;
+        $boolean = False;
+        $cont = 0;
+
+        if($request->session()->get("idEncuesta")){
+            $idEncuesta = $request->session()->get("idEncuesta");
+        }
+
+        $preguntas = Encuesta::join('preguntas', 'encuestas.id', 'preguntas.encuesta_id')
+                                ->select('preguntas.id')
+                                ->where('encuestas.id', $idEncuesta)
+                                ->where('preguntas.encuesta_id', $idEncuesta)
+                                ->get();
+        foreach ($preguntas as $pregunta) {
+            $boolean = True;
+            $idPregunta = $pregunta->id;
+
+            $cerradas = Cerrada::where('pregunta_id', $idPregunta)
+                                ->get();
+            foreach ($cerradas as $cerrada) {
+                $id = $cerrada->id;
+                $preguntaC = $cerrada->pregunta;
+                $cont++;
+                $contName = $cont.'.'.' '.$preguntaC;
+                
+                $html .= "<div class='col-md-12 col-ls-12 col-sm-12'>
+                            <div class='col-md-10 col-ls-10 col-sm-10'>
+                                <label for='checkbox$id'>$contName</label> 
+                            </div>
+                            <div class='col-md-12 col-ls-12 col-sm-12' id='div$id' style='padding-left: 0px;'>
+
+                            </div>
+                            <br /><br />                        
+                        </div>";  
+
+                $html .= "<div class='col-md-12 col-ls-12 col-sm-12' style='margin-bottom: 20px;'></div>";
+            }                 
+        }
+ 
+        return Response::json(array('html' => $html, 'cont' => $cont, 'id' => $id));
+    }
+
+    public function mostrarG(Request $request)
+    {
+        $i = $_GET['i'];
+        $html = "";
+        $idEncuesta = null;
+        $boolean = False;
+        $cont = 0;
+        $cont2 = 0;
+        $bien = 0;
+        $mal = 0;
+        $tipo = $_GET['tipo'];
+
+        $html = "<script type='text/javascript'>";
+
+        $html .= "// Load the Visualization API and the corechart package.
+                google.charts.load('current', {'packages':['corechart']});
+
+                // Set a callback to run when the Google Visualization API is loaded.
+                google.charts.setOnLoadCallback(drawChart);";
+
+        $html .= "// Callback that creates and populates a data table,
+                // instantiates the pie chart, passes in the data and
+                // draws it.
+                function drawChart() {";
+
+        $html .= "var data = google.visualization.arrayToDataTable([
+                ['Respuesta', 'Porcentaje'],";
+
+        if($request->session()->get("idEncuesta")){
+            $idEncuesta = $request->session()->get("idEncuesta");
+        }
+
+        $preguntas = Encuesta::join('preguntas', 'encuestas.id', 'preguntas.encuesta_id')
+                                ->join('cerradas', 'preguntas.id', 'cerradas.pregunta_id')
+                                ->select('preguntas.id')
+                                ->where('encuestas.id', $idEncuesta)
+                                ->where('preguntas.encuesta_id', $idEncuesta)
+                                ->get();
+        foreach ($preguntas as $pregunta) {
+            $boolean = True;
+            $idPregunta = $pregunta->id;
+
+            $cerradas = Cerrada::where('pregunta_id', $idPregunta)
+                                ->get();
+            foreach ($cerradas as $cerrada) {
+                $id = $cerrada->id;
+                $preguntaC = $cerrada->pregunta;
+                $cont++;                 
+            }
+
+            $cerrada_respuestas = Cerrada::join('respuesta_cerradas', 'cerradas.id', 'respuesta_cerradas.cerrada_id')
+                                ->where('cerradas.id', $id)
+                                ->get();
+            foreach ($cerrada_respuestas as $cerrada_respuesta) {
+                $idC = $cerrada_respuesta->id;
+                $respuesta = $cerrada_respuesta->respuesta;
+                $correcta = $cerrada_respuesta->correcta;
+
+                $cont2 = 0;
+                $bien = 0;
+                $mal = 0;
+                $responderEncuestas = ResponderEncuesta::join('respuestas', 'responder_encuestas.id', 'respuestas.realizarEncuesta_id')
+                                        ->select('respuestas.respuesta')
+                                        ->where('respuestas.pregunta_id', $idPregunta)
+                                        ->where('respuestas.tipo', "cerrada")
+                                                        ->get();
+                foreach ($responderEncuestas as $responderEncuesta) {
+                    $respuesta2 = $responderEncuesta->respuesta;
+                    $cont2++;
+
+                    if ($correcta == $respuesta2) {
+                        $bien++;
+                    }else{
+                        $mal++;
+                    }
+                }
+                
+                if ($cont == $i) {
+                    if ($respuesta == $correcta) {
+                        $html .= "['correcto', $bien],";
+                    }else{
+                        $html .= "['incorrecto', $mal],";
+                    }
+                    
+                }
+                
+            }  
+
+            if ($cont == $i) {
+                $html .= "]);";
+
+                if ($tipo == "PieChart") {
+                    $html .= "// Set chart options
+                            var options = { title: '$preguntaC',
+                                            legend: { position: 'bottom' },
+                                            width: 400,
+                                            height: 300,
+                                            colors: ['#e9473f', '#009dcc', '#835ab7'],
+                                            vAxis: {format: 'percent'},
+                                            pieHole: 0.4,};";
+                }else if ($tipo == "BarChart") {
+                    $html .= "// Set chart options
+                            var options = { title: '$preguntaC',
+                                            legend: { position: 'none' },
+                                            width: 400,
+                                            height: 300,
+                                            minValue: 0, 
+                                            maxValue: 100,
+                                            colors: ['#e9473f'],
+                                            vAxis: {format: 'percent'},
+                                            bubble: {textStyle: {fontSize: 11}}};"; 
+                }else if ($tipo == "ComboChart") {
+                    $html .= "// Set chart options
+                            var options = { title: '$preguntaC',
+                                            legend: { position: 'none' },
+                                            width: 400,
+                                            height: 300,
+                                            minValue: 0, 
+                                            maxValue: 100,
+                                            colors: ['#e9473f', '#009dcc', '#835ab7'],
+                                            vAxis: {format: 'percent'},
+                                            seriesType: 'bars',
+                                            series: {5: {type: 'line'}}};"; 
+                }else if ($tipo == "ScatterChart") {
+                    $html .= "// Set chart options
+                            var options = { title: '$preguntaC',
+                                            legend: { position: 'none' },
+                                            width: 400,
+                                            height: 300,
+                                            minValue: 0, 
+                                            maxValue: 100,
+                                            colors: ['#e9473f', '#009dcc', '#835ab7'],
+                                            vAxis: {format: 'percent'}};";  
+                }     
+
+                $html .= "// Instantiate and draw our chart, passing in some options.
+                        var chart = new google.visualization.$tipo(document.getElementById('chart_div.$id'));
+                        chart.draw(data, options);";
+
+                $html .= "}";
+
+                $html .= "</script>";
+
+                $html .= "<div class='col-md-9 col-ls-9 col-sm-9' id='chart_div.$id'></div>";
+
+                // $html .= "<div class='col-md-3 col-ls-3 col-sm-3' style='padding-left: 0px;'>
+                // <button id='$id' class='boton-donut' type='button' style='margin-bottom: 10px;' value='PieChart'> </button>
+                // <br />
+                // <button id='$id' class='boton-bar' type='button' style='margin-bottom: 10px;' value='BarChart'> </button>
+                // <br />
+                // <button id='$id' class='boton-combo' type='button' style='margin-bottom: 10px;' value='ComboChart'> </button>
+                // <br />
+                // <button id='$id' class='boton-scatter' type='button' style='margin-bottom: 10px;' value='ScatterChart'> </button>
+                // </div>";
+
+                break;
+            } 
+
+
+        }
+ 
+        return Response::json(array('html' => $html, 'idG' => $id,));
     }
 }
 

@@ -8,7 +8,7 @@ class ResponderEncuesta extends Model
 {
     protected $table = 'responder_encuestas';
 
-    protected $fillable = ['titulo', 'descripcion', 'user_id'];
+    protected $fillable = ['user_id', 'encuesta_id'];
     
     // Uno a muchos usuario-responderEncuesta
     public function user()
