@@ -69,4 +69,13 @@ Route::group(['prefix' => 'admin'], function(){
 
 Route::group(['prefix' => 'user'], function(){
 	Route::get('/', 'UserController@index')->middleware('auth');
+	Route::get('/responder', 'UserController@responder');
+	Route::get('/responderEncuesta', 'UserController@responderEncuesta');
+
+	Route::post('/idEncuesta', 'UserController@idEncuesta');
+
+	Route::post('/verificar1', 'UserController@verificar1');
+
+	Route::get('/mostrarEncuestasResponder', 'UserController@mostrarEncuestasResponder');
+	Route::get('/mostrarPreguntasResponder', 'UserController@mostrarPreguntasResponder');
 });

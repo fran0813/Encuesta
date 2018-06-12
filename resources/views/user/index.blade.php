@@ -27,7 +27,7 @@
                         &nbsp;
 
                         <ul class="nav navbar-nav navbar-left">
-                            <li class="text-left"><a href="{{ url('/admin/responder') }}">Responder</a></li> 
+                            <li class="text-left"><a href="{{ url('/user/responder') }}">Responder</a></li> 
                         </ul>
                     </ul>
 
@@ -69,17 +69,13 @@
         <div class="row">            
             <div class="col-md-12 col-ls-12 col-sm-12"></div>
 
-            @include('layouts.status')
-
             <div class="col-md-12 col-ls-12 col-sm-12">
-                <h1>Welcome</h1>
+                
             </div>
            
         </div>
     </div>
     @endsection
-
-    @include('admin.modal.modalEditarEncuesta')
 
 @else
     <div class="col-md-12 col-ls-12 col-sm-12">
