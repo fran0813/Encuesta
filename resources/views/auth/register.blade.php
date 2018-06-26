@@ -1,13 +1,15 @@
-@extends('layouts.app')
+@extends('layouts.login-base')
 
 @section('content')
-<div class="container">
-    <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
                 <div class="panel-heading">Register</div>
 
                 <div class="panel-body">
+                    <div class="col-ms-12 col-lg-12 col-sm-12">
+                        <img src="{{ asset('img/encuesta.png') }}" class="center-block" width="20%"><br>
+                    </div>
+
                     <form class="form-horizontal" method="POST" action="{{ route('register') }}">
                         {{ csrf_field() }}
 
@@ -72,6 +74,4 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
 @endsection

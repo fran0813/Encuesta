@@ -6,20 +6,21 @@
         
         @include('layouts.status')
 
-        <div class="col-md-12 col-ls-12 col-sm-12"></div>
-
         <div class="col-md-12 col-ls-12 col-sm-12">
-            <center><a class="btn btn-info" href="{{ url('/admin/crearEncuesta') }}">Crear encuesta</a></center>
+            <br>
+            <br>
+            <br>
         </div>
 
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br> 
+        <div class="col-md-12 col-ls-12 col-sm-12">
+            <center><a class="btn btn-primary btn-lg" href="{{ url('/admin/crearEncuesta') }}">Crear encuesta</a></center>
+        </div>
+
+        <div class="col-md-12 col-ls-12 col-sm-12">
+            <br>
+            <br>
+            <br>
+        </div>
 
         <div class="col-md-12 col-ls-12 col-sm-12" id="tablaEncuestas"></div>
     </div>

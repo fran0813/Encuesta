@@ -1,0 +1,28 @@
+/* login */
+
+body{
+	background-image: url(../img/bg.png);
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.panel-default {
+    border-color: #4f4747;
+}
+.panel {
+    margin-bottom: 20px;
+    background-color: #fff;
+    border: 0px solid transparent;
+    border-radius: 10px;
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    box-shadow: 2px 2px 7px 2px rgba(0, 0, 0, 0.32);
+}
+.panel-default>.panel-heading {
+    color: #fff;
+    background-color: #4f4747;
+    border-color: #4f4747;
+    border-radius: 10px 10px 0px 0px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+}

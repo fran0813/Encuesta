@@ -3,7 +3,7 @@
     @extends('layouts.base')
 
     @section('navbar')
-    <nav class="navbar navbar-default navbar-static-top">
+    <nav class="navbar navbar-inverse navbar-static-top">
         <div class="container">
             <div class="navbar-header">
 
@@ -15,10 +15,6 @@
                     <span class="icon-bar"></span>
                 </button>
 
-                <!-- Branding Image -->
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
             </div>
             
 
@@ -55,7 +51,7 @@
                                 <li>
                                     <a href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
-                                                 document.getElementById('logout-form').submit();">
+                                                 document.getElementById('logout-form').submit();" >
                                         Logout
                                     </a>
 

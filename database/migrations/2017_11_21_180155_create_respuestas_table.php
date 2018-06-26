@@ -17,6 +17,7 @@ class CreateRespuestasTable extends Migration
             $table->increments('id');
             $table->integer('pregunta_id')->unsigned();
             $table->string('respuesta');
+            $table->string('tipo');
             $table->integer('realizarEncuesta_id')->unsigned();
             $table->foreign('realizarEncuesta_id')->references('id')->on('responder_encuestas');
             $table->timestamps();
